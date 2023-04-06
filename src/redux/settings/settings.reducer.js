@@ -62,6 +62,7 @@ export const initialState = {
 
   fullScreenMode: true,
   swipeGestures: false,
+  continuousReading: false,
   showScrollPercentage: true,
   useVolumeButtons: false,
   showBatteryAndTime: false,

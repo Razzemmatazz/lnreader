@@ -71,6 +71,7 @@ const SettingsReaderScreen = () => {
     useVolumeButtons = false,
     verticalSeekbar = true,
     swipeGestures = false,
+    continuousReading = false,
     autoScroll = false,
     autoScrollInterval = 10,
     autoScrollOffset = null,
@@ -195,6 +196,14 @@ const SettingsReaderScreen = () => {
           value={swipeGestures}
           onPress={() =>
             dispatch(setAppSettings('swipeGestures', !swipeGestures))
+          }
+          theme={theme}
+        />
+        <SwitchItem
+          label={getString('readerScreen.bottomSheet.continuousReading')}
+          value={continuousReading}
+          onPress={() =>
+            dispatch(setAppSettings('continuousReading', !continuousReading))
           }
           theme={theme}
         />

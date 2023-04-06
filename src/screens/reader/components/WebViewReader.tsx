@@ -9,6 +9,7 @@ import { useReaderSettings } from '@redux/hooks';
 import { getString } from '@strings/translations';
 
 import { sourceManager } from '../../../sources/sourceManager';
+import { useSettings } from '../../../hooks/reduxHooks';
 
 type WebViewPostEvent = {
   type: string;
@@ -28,7 +29,6 @@ type WebViewReaderProps = {
   };
   html: string;
   chapterName: string;
-  swipeGestures: boolean;
   minScroll: React.MutableRefObject<number>;
   nextChapter: ChapterItem;
   webViewRef: React.MutableRefObject<WebView>;
@@ -49,7 +49,6 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
     chapterInfo,
     html,
     chapterName,
-    swipeGestures,
     minScroll,
     nextChapter,
     webViewRef,
@@ -64,6 +63,8 @@ const WebViewReader: React.FC<WebViewReaderProps> = props => {
 
   const readerSettings = useReaderSettings();
   const { theme: backgroundColor } = readerSettings;
+
+  const { swipeGestures } = useSettings();
 
   const layoutHeight = Dimensions.get('window').height;
   const headers = sourceManager(chapterInfo.sourceId)?.headers;

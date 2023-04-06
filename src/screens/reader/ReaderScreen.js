@@ -31,6 +31,7 @@ import ReaderSeekBar from './components/ReaderSeekBar';
 import { insertHistory } from '../../database/queries/HistoryQueries';
 import { SET_LAST_READ } from '../../redux/preferences/preference.types';
 import WebViewReader from './components/WebViewReader';
+import InfinityReader from './components/InfinityReader';
 import { useTextToSpeech } from '../../hooks/useTextToSpeech';
 import { useFullscreenMode, useLibrarySettings } from '../../hooks';
 import { getChapterFromDb } from '../../database/queries/DownloadQueries';
@@ -80,11 +81,9 @@ const ChapterContent = ({ route, navigation }) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const readerSettings = useReaderSettings();
-  const { theme: backgroundColor } = readerSettings;
 
   const {
-    swipeGestures = false,
+    continuousReading = false,
     useVolumeButtons = false,
     autoScroll = false,
     autoScrollInterval = 10,
@@ -316,25 +315,45 @@ const ChapterContent = ({ route, navigation }) => {
 
   return (
     <>
-      <WebViewReader
-        chapterInfo={params}
-        html={chapterText}
-        chapterName={chapter.chapterName || chapterName}
-        swipeGestures={swipeGestures}
-        minScroll={minScroll}
-        nextChapter={nextChapter}
-        webViewRef={webViewRef}
-        onLayout={() => {
-          if (useVolumeButtons) {
-            onLayout();
-          }
-          scrollTo(position?.position);
-        }}
-        onPress={hideHeader}
-        doSaveProgress={doSaveProgress}
-        navigateToChapterBySwipe={navigateToChapterBySwipe}
-        onWebViewNavigationStateChange={onWebViewNavigationStateChange}
-      />
+      {continuousReading ? (
+        <InfinityReader
+          chapterInfo={params}
+          html={chapterText}
+          chapterName={chapter.chapterName || chapterName}
+          minScroll={minScroll}
+          nextChapter={nextChapter}
+          webViewRef={webViewRef}
+          onLayout={() => {
+            if (useVolumeButtons) {
+              onLayout();
+            }
+            scrollTo(position?.position);
+          }}
+          onPress={hideHeader}
+          doSaveProgress={doSaveProgress}
+          navigateToChapterBySwipe={navigateToChapterBySwipe}
+          onWebViewNavigationStateChange={onWebViewNavigationStateChange}
+        />
+      ) : (
+        <WebViewReader
+          chapterInfo={params}
+          html={chapterText}
+          chapterName={chapter.chapterName || chapterName}
+          minScroll={minScroll}
+          nextChapter={nextChapter}
+          webViewRef={webViewRef}
+          onLayout={() => {
+            if (useVolumeButtons) {
+              onLayout();
+            }
+            scrollTo(position?.position);
+          }}
+          onPress={hideHeader}
+          doSaveProgress={doSaveProgress}
+          navigateToChapterBySwipe={navigateToChapterBySwipe}
+          onWebViewNavigationStateChange={onWebViewNavigationStateChange}
+        />
+      )}
       <BottomInfoBar scrollPercentage={position?.percentage || 0} />
       <Portal>
         <ReaderBottomSheetV2 bottomSheetRef={readerSheetRef} />

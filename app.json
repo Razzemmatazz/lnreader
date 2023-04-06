@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "LNReader",
-    "slug": "LNReader",
+    "name": "LNReader-Test",
+    "slug": "LNReader-Test",
     "scheme": "lnreader",
     "notification": {
       "icon": "./assets/notification.png",
